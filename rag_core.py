@@ -41,9 +41,9 @@ def ask_question(query: str, k: int = 4):
 
     docs = retriever.invoke(query)
 
-    docs = docs[:5]
+    docs = docs[:3]
 
-    context_chunks = [doc.page_content for doc in docs]
+    context_chunks = [doc.page_content[:800] for doc in docs]
 
     context = "\n\n".join(context_chunks)
 
