@@ -67,9 +67,11 @@ Question:
 Answer:
 """
 
-    response = llm.invoke([
-    {"role": "user", "content": prompt}
-])
+    try:
+        response = llm.invoke(prompt)
+    except Exception as e:
+        st.error(f"Error generating response: {str(e)}")
+        raise e
 
     sources = [doc.metadata for doc in docs]
 
