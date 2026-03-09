@@ -3,9 +3,8 @@ from vectorstore import load_vector_store
 from langchain_groq import ChatGroq
 import streamlit as st
 
-
 # -------------------------------
-# Initialize System
+# Initialize RAG System
 # -------------------------------
 
 print("🔄 Initializing RAG system...")
@@ -13,11 +12,11 @@ print("🔄 Initializing RAG system...")
 embeddings = load_embedding_model()
 vectordb = load_vector_store(embeddings)
 
+# Groq LLM
 llm = ChatGroq(
     groq_api_key=st.secrets["GROQ_API_KEY"],
     model_name="llama3-70b-8192",
     temperature=0
-)
 )
 
 print("✅ RAG system ready.")
@@ -29,16 +28,13 @@ print("✅ RAG system ready.")
 
 def ask_question(query: str, k: int = 4):
 
-    # Create retriever dynamically
     retriever = vectordb.as_retriever(
         search_type="similarity",
         search_kwargs={"k": k}
     )
 
-    # Retrieve documents
     docs = retriever.invoke(query)
 
-    # Limit context to top 3 chunks to avoid overload
     docs = docs[:5]
 
     context_chunks = [doc.page_content for doc in docs]
@@ -51,11 +47,10 @@ You are a biomedical research assistant.
 Use ONLY the information from the context to answer the question.
 
 Rules:
-- Do NOT repeat the full context.
-- Extract only the relevant information.
-- Summarize the answer in 2–3 sentences.
-- If the answer is not present in the context, respond exactly with:
-No relevant information found in the provided documents.
+- Do NOT repeat the entire context.
+- Extract only relevant information.
+- If information is missing say:
+  "No relevant information found in the provided documents."
 
 Context:
 {context}
@@ -70,4 +65,4 @@ Answer:
 
     sources = [doc.metadata for doc in docs]
 
-    return response.strip(), sources, context_chunks
+    return response.content, sources, context_chunks
