@@ -7,7 +7,7 @@ import streamlit as st
 # -------------------------------
 # Initialize RAG System
 # -------------------------------
-
+@st.cache_resource
 def initialize_rag():
 
     print("🔄 Initializing RAG system...")
