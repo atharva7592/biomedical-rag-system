@@ -1,57 +1,30 @@
 import streamlit as st
 from rag_core import ask_question
 
-st.set_page_config(
-    page_title="Biomedical RAG Assistant",
-    page_icon="🧠",
-    layout="wide"
-)
+st.set_page_config(page_title="Biomedical Research Assistant")
 
-st.title("🧠 Biomedical Research Assistant")
-st.markdown("Local RAG System powered by MiniLM + ChromaDB + Ollama (llama3)")
+st.title("Biomedical Research Assistant")
+st.write("Ask questions from biomedical research papers.")
 
-# Sidebar
-st.sidebar.header("⚙️ Settings")
+query = st.text_input("Enter your question")
 
-top_k = st.sidebar.slider(
-    "Top-K Retrieval Chunks",
-    min_value=1,
-    max_value=8,
-    value=4
-)
+if st.button("Ask"):
 
-st.sidebar.markdown("""
-**Embedding Model:** all-MiniLM-L6-v2  
-**Vector DB:** ChromaDB  
-**LLM:** llama3 (Ollama Local)  
-**Chunk Size:** 800  
-**Overlap:** 150  
-""")
+    if query.strip() == "":
+        st.warning("Please enter a question.")
+    else:
 
-query = st.text_input("Enter your biomedical question:")
+        with st.spinner("Searching documents..."):
 
-if query:
+            answer, sources, chunks = ask_question(query)
 
-    with st.spinner("🔎 Retrieving and generating answer..."):
-        answer, sources, chunks = ask_question(query, top_k)
+        st.subheader("Answer")
+        st.write(answer)
 
-    st.divider()
+        st.subheader("Sources")
+        for s in sources:
+            st.write(s)
 
-    st.subheader("🧠 Answer")
-    st.write(answer)
-
-    st.divider()
-
-    st.subheader("📚 Sources")
-
-    for i, source in enumerate(sources):
-        with st.expander(f"Source {i+1}"):
-            st.json(source)
-
-    st.divider()
-
-    st.subheader("🔍 Retrieved Context")
-
-    for i, chunk in enumerate(chunks):
-        with st.expander(f"Chunk {i+1}"):
-            st.write(chunk)
+        with st.expander("Retrieved Context"):
+            for c in chunks:
+                st.write(c)
