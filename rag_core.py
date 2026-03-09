@@ -1,6 +1,7 @@
 from embeddings import load_embedding_model
 from vectorstore import load_vector_store
-from langchain_community.llms import Ollama
+from langchain_groq import ChatGroq
+import streamlit as st
 
 
 # -------------------------------
@@ -12,9 +13,11 @@ print("🔄 Initializing RAG system...")
 embeddings = load_embedding_model()
 vectordb = load_vector_store(embeddings)
 
-llm = Ollama(
-    model="llama3",
+llm = ChatGroq(
+    groq_api_key=st.secrets["GROQ_API_KEY"],
+    model_name="llama3-70b-8192",
     temperature=0
+)
 )
 
 print("✅ RAG system ready.")
