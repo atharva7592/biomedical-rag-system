@@ -15,6 +15,8 @@ def initialize_rag():
     embeddings = load_embedding_model()
     vectordb = load_vector_store(embeddings)
 
+    print("VECTOR COUNT:", vectordb._collection.count())
+
     llm = ChatGroq(
         groq_api_key=st.secrets["GROQ_API_KEY"],
         model_name="llama-3.1-8b-instant",
