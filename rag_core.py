@@ -3,23 +3,27 @@ from vectorstore import load_vector_store
 from langchain_groq import ChatGroq
 import streamlit as st
 
+
 # -------------------------------
 # Initialize RAG System
 # -------------------------------
 
-print("🔄 Initializing RAG system...")
+def initialize_rag():
 
-embeddings = load_embedding_model()
-vectordb = load_vector_store(embeddings)
+    print("🔄 Initializing RAG system...")
 
-# Groq LLM
-llm = ChatGroq(
-    groq_api_key=st.secrets["GROQ_API_KEY"],
-    model_name="llama3-70b-8192",
-    temperature=0
-)
+    embeddings = load_embedding_model()
+    vectordb = load_vector_store(embeddings)
 
-print("✅ RAG system ready.")
+    llm = ChatGroq(
+        groq_api_key=st.secrets["GROQ_API_KEY"],
+        model_name="llama3-70b-8192",
+        temperature=0
+    )
+
+    print("✅ RAG system ready.")
+
+    return vectordb, llm
 
 
 # -------------------------------
@@ -27,6 +31,8 @@ print("✅ RAG system ready.")
 # -------------------------------
 
 def ask_question(query: str, k: int = 4):
+
+    vectordb, llm = initialize_rag()
 
     retriever = vectordb.as_retriever(
         search_type="similarity",
