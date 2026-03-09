@@ -21,6 +21,8 @@ if st.button("Ask"):
         st.subheader("Answer")
         st.write(answer)
 
+        st.write("DEBUG chunks:", chunks)
+
         st.subheader("Sources")
 
         for i, source in enumerate(sources):
