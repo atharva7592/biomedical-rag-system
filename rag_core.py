@@ -67,7 +67,9 @@ Question:
 Answer:
 """
 
-    response = llm.invoke(prompt)
+    response = llm.invoke([
+    {"role": "user", "content": prompt}
+])
 
     sources = [doc.metadata for doc in docs]
 
