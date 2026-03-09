@@ -25,11 +25,16 @@ if st.button("Ask"):
 
         st.subheader("Sources")
 
-        for i, source in enumerate(sources):
+        for i, s in enumerate(sources):
+
+            source_file = s.get("source", "Unknown document")
+            page = s.get("page", "Unknown page")
+
             st.write(f"Source {i+1}")
-            st.write(source)
+            st.write(f"Document: {source_file}")
+            st.write(f"Page: {page}")
             st.write("---")
 
-        with st.expander("Retrieved Context"):
-            for c in chunks:
-                st.write(c)
+            with st.expander("Retrieved Context"):
+                for c in chunks:
+                    st.write(c)
