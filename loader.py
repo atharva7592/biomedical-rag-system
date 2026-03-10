@@ -24,15 +24,12 @@ def clean_text(text):
     for line in lines:
         line = line.strip()
 
-        # Remove empty / very short lines
         if len(line) < 5:
             continue
 
-        # Remove figure captions
         if line.startswith("Fig.") or line.startswith("Figure"):
             continue
 
-        # Remove noisy patterns
         if any(pattern in line for pattern in noise_patterns):
             continue
 
@@ -44,7 +41,9 @@ def clean_text(text):
 # -------------------------------
 # Load and Clean PDFs
 # -------------------------------
-def load_pdfs(folder_path):
+def load_documents():
+
+    folder_path = "data"
     documents = []
 
     for file in os.listdir(folder_path):
