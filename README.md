@@ -1,5 +1,11 @@
 # 🧠 Biomedical Research Assistant (RAG System)
 
+# Biomedical Research Assistant (RAG)
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-streamlit-link.streamlit.app)
+
+A Retrieval-Augmented Generation (RAG) system that allows users to upload biomedical research papers and ask questions about them.
+
 This project implements a **Retrieval-Augmented Generation (RAG) system** for answering questions from biomedical research papers.
 
 The system uses **semantic search + local LLM inference** to retrieve relevant document sections and generate grounded answers.
